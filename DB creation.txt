@@ -1,0 +1,45 @@
+create datAbase employees;
+
+create table Employees(
+id int unsigned primary key auto_increment,
+name varchar(30) not null
+);
+
+
+insert into Employees(name)
+VALUES ('Shachar'), ('Yoad'), ('Guy');
+
+-- EmployeeRoles (EmployeeId , RoleId , enabled);
+create table Roles(
+id int unsigned primary key auto_increment,
+description varchar(30) not null
+);
+
+insert into Roles(description)
+VALUES ('Teacher'), ('Programmer');
+
+create table EmployeeRoles(
+EmployeeId int unsigned not null,
+RoleId int unsigned not null,
+enabled varchar(30),
+ foreign key (EmployeeId) references Employees(id) on delete restrict on update cascade,
+  foreign key (RoleId) references Roles(id) on delete restrict on update cascade
+);
+
+insert into EmployeeRoles(EmployeeId,RoleId, enabled )
+VALUES (1,1, 'yes'), (1, 2, 'yes'), (2, 1, 'no'), (3,1,'yes');
+
+SELECT ER.Roleid as 'RoleId', R.description as 'description'
+FROM Roles as R INNER JOIN EmployeeRoles as ER
+ON ER.EmployeeId = 1 AND R.ID = ER.RoleId AND ER.enabled = 'yes';
+
+create table Attendance(
+employeeId int unsigned not null,
+roleId int unsigned not null,
+actionTime timestamp,
+ foreign key (EmployeeId) references Employees(id) on delete restrict on update cascade,
+  foreign key (RoleId) references Roles(id) on delete restrict on update cascade
+);
+
+insert into Attendance(employeeId, roleId)
+VALUES (1,1);
